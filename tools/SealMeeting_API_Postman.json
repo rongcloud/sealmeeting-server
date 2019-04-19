@@ -1,0 +1,746 @@
+{
+	"info": {
+		"_postman_id": "0fc5c08c-3abb-4d05-9f30-d836457196b9",
+		"name": "SealMeeting copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "join",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"observer\": true, \"userName\": \"u10\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/join",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"join"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "leave",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJpMGRIZk9aaFNlMHBHWlJMQ2libVdBIiwiaWF0IjoxNTUyMjkwNzY1LCJtYXJrIjoi55K-4o2E776K46qN4LS55p-y7Y2h46215LKx4Zix6qCb6JyV5ben4q2s4aOA4oeqIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9sZUlkXCI6MSxcInVzZXJJZFwiOlwidXNlcklkX3RlYWNoZXJcIn0ifQ.IVpFbQDQgecm_APor7SW7hZPPSEpdoPeYRFdp_sE23c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"roomId_111\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/leave",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"leave"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh-token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{teacher_auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"userId\": \"userId_wei\", \"name\": \"wei\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/user/refresh-token",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"user",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change-role",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJwa2ZTam9HRVNpTXQxSFVJdUZVSWl3IiwiaWF0IjoxNTUyNDUxNzg4LCJtYXJrIjoi4q2X6Jid5pG34Ymm6LyF6Zm96YiL4pSf57G-7ZGE746W57Kf7KWO6bGP4aic4rSTIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJoZWxsb1wiLFwidXNlcklkXCI6XCJ0XzFcIn0ifQ.s7OdNMvzaswMwTVxLzxOOrnKFc1OAS6UaD1kGY7J_48",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"hello\", \"users\": [{\"userId\": \"t_1\", \"role\": 2}, {\"userId\": \"u_1\", \"role\": 2}]}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/change-role",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"change-role"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kick",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{assistant_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"roomId_111\", \"userId\": \"userId_participant\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/kick",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"kick"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "whiteboard/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{teacher_auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/whiteboard/create",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"whiteboard",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "whiteboard/delete",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{teacher_auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"roomId_wei\", \"whiteboardId\": \"http://120.92.85.162/ewbweb/blink-wb.html?roomKey=c9kqb3rdkbb8jYVWuHEumQesle-M0CQHJ20&token=eyJhbGciOiJIUzUxMiJ9.eyJyb29tS2V5IjoiYzlrcWIzcmRrYmI4allWV3VIRXVtUWVzbGUtTTBDUUhKMjAiLCJleHAiOjE1NTIzNzAxNzZ9.LGkpiR5jqRc805h7vhF_9ZwZPGH2nzujLeBC9A3MHUumTNfNU0zwTVFa84SCvvMzwR4pBHVSEsH5i6HgECz80g\"}\n"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/whiteboard/delete",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"whiteboard",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "whiteboard/list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{teacher_auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/whiteboard/list?roomId=roomId_111",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"whiteboard",
+						"list"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "roomId_111"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/device/control",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{assistant_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"microphoneOn\": false, \"userId\": \"uG-F7n3MTOsu3sX9UNpNyg\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/device/control",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"device",
+						"control"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "display",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{assistant_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"type\": 2, \"userId\": \"ncr24TNUQ5Ip5JkYn0FRSw\", \"uri\": \"https://imqa.rongcloud.net/wb/wb.html?roomKey=c9kqb3rdkbb8j8ZdelzyOS_MmwKP8k6OE8Q&token=eyJhbGciOiJIUzUxMiJ9.eyJyb29tS2V5IjoiYzlrcWIzcmRrYmI4ajhaZGVsenlPU19NbXdLUDhrNk9FOFEiLCJleHAiOjE1NTI5ODAzMDJ9.LyIatb0wZi6GWTdv9sFD5oSMmcuIQic5H18ogOYgsIJGPCzHEdPtlq78Qjr9X86FP4dAZMaMJM2GQugVdJ3lBQ\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/display",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"display"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "turn page",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiI4Z1RTemd6LVJsUXZBZVJDaFJsZndVIiwiaWF0IjoxNTUyMjc0MDY4LCJtYXJrIjoi4YON4bCB5YG44K6h66yQXHUwMDBF4Kep75iR5aC864-w7L6eXHVEODUxXHVEQzY47YWi5JKt5YSeIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9sZUlkXCI6MixcInVzZXJJZFwiOlwidXNlcklkX3RlYWNoZXJcIn0ifQ.454PFcCKQtsxInbc27XCz1xsW695uFTq_wCWXwR0B2Y"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"roomId_111\", \"whiteBoardId\": \"https://rtc.ronghub.com/ewbweb/blink-wb.html?roomKey=c9kqb3rdkbb8jroomId_111&token=eyJhbGciOiJIUzUxMiJ9.eyJyb29tS2V5IjoiYzlrcWIzcmRrYmI4anJvb21JZF8xMTEiLCJleHAiOjE1NTIzNTgxODd9.rL1ZnYNyNWFNeI4-2aDD_eQ88e7YoQPTPhu3zlj0x2IFcmJtX84rCq7iPIYven3UOcMgWv-DDtNOzqw6JWOejA\", \"page\": 1}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/whiteboard/turn-page",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"whiteboard",
+						"turn-page"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "member/list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJuWDNzOGxnY1JtVWdxel9YT0pOVWlFIiwiaWF0IjoxNTUyNDQ1ODA3LCJtYXJrIjoi4rGh76W77Lum7qec4bKm6b-u6JW16rWY6Iej5ry_6Kao7Y-S6oGf54uI4K-o74CLIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9sZUlkXCI6MixcInVzZXJJZFwiOlwidF8xXCJ9In0.kS-1F3ipU82WpVvQDNuENPBezXB2Dbz4O1gkEPvL80Y",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/members?roomId=class111",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"members"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "class111"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apply",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJ2WjZudnJvMVFjWXJCSXFCeGozNGQ0IiwiaWF0IjoxNTUyNjMxMDY4LCJtYXJrIjoi556h4our7pCh4Kiz5KCb6YKt6Zqz472S76S_7oOB65267Yi65ICp7Y656p-o4bmTIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJjbGFzczExMVwiLFwidXNlcklkXCI6XCJEWDJCOHoyU1RkQWt1N1RKZTBCWXl3XCIsXCJ1c2VyTmFtZVwiOlwidTZcIn0ifQ.mLfg9eyiC62ho7pRdiRrDbxxRtoIY7BX43ivjpytBy8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class111\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/speech/apply",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"speech",
+						"apply"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "approve",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{assistant_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"hello\", \"ticket\": \"CYMGK3EpQNUl4HCim4kPAk\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/approve",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reject",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiI0QUtYUXFtOFRvc29xSWNKYVBhMmYwIiwiaWF0IjoxNTUyNDQ5OTAzLCJtYXJrIjoi5Y-t75y54oG-76mD4Y666K6K6rKX7o-XXHVEQTA3XHVEQzUw4b2R74mZ5oOQ7Kai4Yu45LuHIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJoZWxsb1wiLFwidXNlcklkXCI6XCJ0XzFcIn0ifQ.cl4P0mvOpdKu-Q1F0Rkz34fArDNGh2__jC5cAPeOy7U"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"hello\", \"ticket\": \"n0QMYHVYTM4gzNPWYmH7I4\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/reject",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"reject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upgrade/invite",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{assistant_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"userId\": \"uG-F7n3MTOsu3sX9UNpNyg\", \"role\": 3}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/upgrade/invite",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"upgrade",
+						"invite"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJ2X0RFMy1lRVR4MHJ4eEE5SU1sUDlZIiwiaWF0IjoxNTUyNTM3MTIwLCJtYXJrIjoi7qmp75SI7IaT7LON4YCQ5b2156--5bKI6LWC7L2R4aWf6be965u97Iih54mV56apIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJoZWxsbzFcIixcInVzZXJJZFwiOlwiaGl2dlVSNVVTb3Nwa2xIY1lRQ2Q1VVwiLFwidXNlck5hbWVcIjpcImFfMVwifSJ9.orsCMeBH1EzFIYBEu18_q-T71V6Pxh_cuItjKrMebe4"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"hello1\", \"userId\": \"VeDKs_GpQcEorppEiS0Hv8\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/transfer",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "downgrade",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{assistant_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class111\", \"users\": [{\"userId\": \"jJmVx9GSQe4kKV9K3iS3tA\", \"role\": 4}]}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/downgrade",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"downgrade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upgrade/approve",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJsaWw4UlRPQVR3RWljYklZSlVCX0o4IiwiaWF0IjoxNTUyOTE1NTEyLCJtYXJrIjoi5ZiU76Gi7Yii5aal3Ifvl5fVneStguqUueGHht2_57GG5ZmZ4pKX5ryJ476oIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJjbGFzczIyMlwiLFwidXNlcklkXCI6XCJ1Ry1GN24zTVRPc3Uzc1g5VU5wTnlnXCIsXCJ1c2VyTmFtZVwiOlwidThcIn0ifQ.uVWysobyB5k2YdnZRoVig3XvsLPC_iQMMz3QGtPDcaA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"ticket\": \"RJ_53WZeTmYlno9BBwJW-8\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/upgrade/approve",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"upgrade",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upgrade/reject",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJsaWw4UlRPQVR3RWljYklZSlVCX0o4IiwiaWF0IjoxNTUyOTE1NTEyLCJtYXJrIjoi5ZiU76Gi7Yii5aal3Ifvl5fVneStguqUueGHht2_57GG5ZmZ4pKX5ryJ476oIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJjbGFzczIyMlwiLFwidXNlcklkXCI6XCJ1Ry1GN24zTVRPc3Uzc1g5VU5wTnlnXCIsXCJ1c2VyTmFtZVwiOlwidThcIn0ifQ.uVWysobyB5k2YdnZRoVig3XvsLPC_iQMMz3QGtPDcaA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"ticket\": \"igUiAM3jTPYkVAMNYM3EQM\"}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/upgrade/reject",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"upgrade",
+						"reject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/device/sync",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb25nY2xvdWQiLCJqdGkiOiJOd1J2UDBLbVJkNGlPLWVMODlEYUJ3IiwiaWF0IjoxNTUyOTYzODQ2LCJtYXJrIjoi6Ly977GD6L6d6J2A4beP6rS26IK6XHVEODBBXHVEREE167CG4bqr6pe54aWB64W545mu7rmqIiwiZGF0YSI6IntcImRldmljZVR5cGVcIjowLFwicm9vbUlkXCI6XCJjbGFzczIyMlwiLFwidXNlcklkXCI6XCJtNzhucGZacVNyUXNKbHdLemZjTjEwXCIsXCJ1c2VyTmFtZVwiOlwidTEwXCJ9In0.Sbj1-cFjOk_Axk9A6tEAxi56zBjBCxHtk51IoXUm3UU"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"roomId\": \"class222\", \"microphoneOn\": false}"
+				},
+				"url": {
+					"raw": "{{sealmeeting_url}}/room/device/sync",
+					"host": [
+						"{{sealmeeting_url}}"
+					],
+					"path": [
+						"room",
+						"device",
+						"sync"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
