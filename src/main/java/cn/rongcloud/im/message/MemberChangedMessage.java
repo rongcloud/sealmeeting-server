@@ -19,6 +19,8 @@ public class MemberChangedMessage extends BaseMessage {
 
     @Getter @Setter private String userId;
     @Getter @Setter private String userName;
+    @Getter @Setter private boolean camera;
+    @Getter @Setter private boolean microphone;
 
     private @Getter @Setter int role;
 
@@ -28,6 +30,8 @@ public class MemberChangedMessage extends BaseMessage {
         this.action = action;
         this.userId = userId;
         this.role = role;
+        this.camera = true;
+        this.microphone = true;
     }
 
     @Override

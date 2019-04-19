@@ -136,6 +136,7 @@ public class RoomServiceImpl implements RoomService {
         MemberChangedMessage msg = new MemberChangedMessage(MemberChangedMessage.Action_Join, userId, roleEnum.getValue());
         msg.setTimestamp(curTime);
         msg.setUserName(userName);
+        msg.setCamera(!isDisableCamera);
         imHelper.publishMessage(userId, roomId, msg);
         if (roleEnum == RoleEnum.RoleSpeaker) {
             display = "display://type=1?userId=" + userId + "?uri=";
