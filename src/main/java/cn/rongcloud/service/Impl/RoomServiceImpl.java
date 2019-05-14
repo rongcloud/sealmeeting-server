@@ -202,6 +202,7 @@ public class RoomServiceImpl implements RoomService {
         room.setName(roomName);
         room.setCreateDt(createTime);
         room.setDisplay(display);
+        room.setWhiteboardNameIndex(0);
         roomDao.save(room);
     }
 
