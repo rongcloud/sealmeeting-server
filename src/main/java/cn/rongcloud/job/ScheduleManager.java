@@ -17,6 +17,8 @@ import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -42,14 +44,40 @@ public class ScheduleManager implements SchedulingConfigurer {
     @Autowired
     RoomDao roomDao;
 
+    @Autowired
+    RoomService roomService;
+
     private ConcurrentHashMap<String, ScheduledTask> schedulingTasks = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, ScheduledTask> roomCacheTasks = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Date> userIMOfflineMap = new ConcurrentHashMap<>();
+    private ScheduledDelayTask userIMOfflineKickTask = new ScheduledDelayTask(new Runnable() {
+        @Override
+        public void run() {
+            for (Map.Entry<String, Date> entry : userIMOfflineMap.entrySet()) {
+                long currentTimeMillis = System.currentTimeMillis();
+                log.info("userIMOfflineKickTask entry={}, currentTimeMillis={}", entry.getValue().getTime(), currentTimeMillis);
+                if (currentTimeMillis - entry.getValue().getTime() > roomProperties.getUserIMOfflineKickTtl()) {
+                    userIMOfflineMap.remove(entry.getKey());
+                    roomService.userIMOfflineKick(entry.getKey());
+                }
+            }
+        }
+    }, 60000, 60000, null);
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
+        scheduledTaskRegistrar.scheduleFixedDelayTask(userIMOfflineKickTask);
         this.taskRegistrar = scheduledTaskRegistrar;
         log.info("config schedule: taskTtl = {}, roomTtl={}, roomMaxCount={}, ", roomProperties.getTaskTtl(), roomProperties.getRoomTtl(), roomProperties.getMaxCount());
         log.info("config whiteboard: host={}", whiteBoardProperties.getHost());
+    }
+
+    public void userIMOffline(String userId) {
+        userIMOfflineMap.put(userId, new Date());
+    }
+
+    public void userIMOnline(String userId) {
+        userIMOfflineMap.remove(userId);
     }
 
     public void addExpiredTask(RoomService roomService, String roomId) {

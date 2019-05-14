@@ -7,6 +7,7 @@ import cn.rongcloud.common.JwtUser;
 import cn.rongcloud.filter.JwtFilter;
 import cn.rongcloud.pojo.*;
 import cn.rongcloud.service.RoomService;
+import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -212,6 +213,16 @@ public class RoomController {
                                             @RequestAttribute(value = JwtFilter.JWT_AUTH_DATA, required = false) JwtUser jwtUser)
             throws ApiException, Exception {
         Boolean result = roomService.changeRole(data.getRoomId(), data.getUserId(), data.getRole(), jwtUser);
+        return new BaseResponse<>(result);
+    }
+
+    @RequestMapping(value = "/members/online-status", method = RequestMethod.POST)
+    public BaseResponse<Boolean> memberOnlineStatus(@RequestBody List<ReqMemberOnlineStatus> statusList,
+                                                    @RequestParam(value = "timestamp", required = false) String timestamp,
+                                                    @RequestParam(value = "nonce", required = false) String nonce,
+                                                    @RequestParam(value = "signature", required = false) String signature)
+            throws ApiException, Exception {
+        Boolean result = roomService.memberOnlineStatus(statusList, nonce, timestamp, signature);
         return new BaseResponse<>(result);
     }
 }

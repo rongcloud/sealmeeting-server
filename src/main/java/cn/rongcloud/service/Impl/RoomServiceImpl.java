@@ -1,6 +1,7 @@
 package cn.rongcloud.service.Impl;
 
 import cn.rongcloud.common.*;
+import cn.rongcloud.config.IMProperties;
 import cn.rongcloud.config.RoomProperties;
 import cn.rongcloud.dao.*;
 import cn.rongcloud.im.IMHelper;
@@ -10,6 +11,7 @@ import cn.rongcloud.permission.DeclarePermissions;
 import cn.rongcloud.pojo.*;
 import cn.rongcloud.service.RoomService;
 import cn.rongcloud.utils.CheckUtils;
+import cn.rongcloud.utils.CodeUtil;
 import cn.rongcloud.utils.DateTimeUtils;
 import cn.rongcloud.utils.IdentifierUtils;
 import cn.rongcloud.whiteboard.WhiteBoardHelper;
@@ -54,6 +56,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private IMProperties imProperties;
 
     @Transactional
     @Override
@@ -479,17 +484,22 @@ public class RoomServiceImpl implements RoomService {
         if (resultInfo.isSuccess()) {
             String wbId = resultInfo.getData();
             Date date = DateTimeUtils.currentUTC();
+            List<Room> roomList = roomDao.findByRid(roomId);
+            int whiteboardNameIndex = roomList.get(0).getWhiteboardNameIndex() + 1;
+            String name = "白板" + whiteboardNameIndex;
+            roomDao.updateWhiteboardNameIndexByRid(roomId, whiteboardNameIndex);
             Whiteboard wb = new Whiteboard();
             wb.setRid(roomId);
             wb.setWbRoom(wbRoom);
             wb.setWbid(wbId);
+            wb.setName(name);
             wb.setCreator(jwtUser.getUserId());
             wb.setCreateDt(date);
             wb.setCurPg(0);
-            Whiteboard wbObj = whiteboardDao.save(wb);
+            whiteboardDao.save(wb);
             WhiteboardMessage wbmsg = new WhiteboardMessage(WhiteboardMessage.Create);
             wbmsg.setWhiteboardId(wbId);
-            wbmsg.setWhiteboardName("白板" + wbObj.getId());
+            wbmsg.setWhiteboardName(name);
             imHelper.publishMessage(jwtUser.getUserId(), roomId, wbmsg);
             String display = "display://type=2?userId=" + jwtUser.getUserId() + "?uri=" + wbId;
             roomDao.updateDisplayByRid(roomId, display);
@@ -549,7 +559,7 @@ public class RoomServiceImpl implements RoomService {
         List<RoomResult.WhiteboardResult> result = new ArrayList<>();
         for (Whiteboard wb : whiteboards) {
             RoomResult.WhiteboardResult r = new RoomResult.WhiteboardResult();
-            r.setName("白板" + wb.getId());
+            r.setName(wb.getName());
             r.setCurPg(wb.getCurPg());
             r.setWhiteboardId(wb.getWbid());
             result.add(r);
@@ -993,6 +1003,83 @@ public class RoomServiceImpl implements RoomService {
         log.info("changeRole, display changed: roomId={}, {}, targetUserId={}", roomId, display, targetUserId);
 
         return true;
+    }
+
+    @Override
+    public Boolean memberOnlineStatus(List<ReqMemberOnlineStatus> statusList, String nonce, String timestamp, String signature) throws ApiException, Exception {
+        String sign = imProperties.getSecret() + nonce + timestamp;
+        String signSHA1 = CodeUtil.hexSHA1(sign);
+        if (!signSHA1.equals(signature)) {
+            log.info("memberOnlineStatus signature error");
+            return true;
+        }
+
+        for (ReqMemberOnlineStatus status : statusList) {
+            int s = Integer.parseInt(status.getStatus());
+            String userId = status.getUserId();
+
+            log.info("memberOnlineStatus, userId={}, status={}", userId, status);
+            //1：offline 离线； 0: online 在线
+            if (s == 1) {
+                List<RoomMember> members = roomMemberDao.findByUid(userId);
+                if (!members.isEmpty()) {
+                    scheduleManager.userIMOffline(userId);
+                }
+            } else if (s == 0) {
+                scheduleManager.userIMOnline(userId);
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void userIMOfflineKick(String userId) {
+        List<RoomMember> members = roomMemberDao.findByUid(userId);
+        for (RoomMember member : members) {
+            int userRole = member.getRole();
+            log.info("userIMOfflineKick: roomId={}, {}, role={}", member.getRid(), userId, RoleEnum.getEnumByValue(userRole));
+            try {
+                if (userRole == RoleEnum.RoleSpeaker.getValue() || userRole == RoleEnum.RoleAdmin.getValue()) {
+                    List<Room> rooms = roomDao.findByRid(member.getRid());
+                    if (rooms.isEmpty()) {
+                        break;
+                    }
+                    if (isUserDisplay(rooms.get(0), member.getUid())) {
+                        updateDisplay(member.getRid(), member.getUid(), "", 0);
+                        log.info("memberOnlineStatus offline: roomId={}, {}", member.getRid(), member.getUid());
+                    }
+                }
+                if (roomMemberDao.countByRid(member.getRid()) == 1) {
+                    IMApiResultInfo apiResultInfo = null;
+                    apiResultInfo = imHelper.dismiss(member.getUid(), member.getRid());
+                    if (apiResultInfo.getCode() == 200) {
+                        roomMemberDao.deleteUserByRidAndUid(member.getRid(), member.getUid());
+                        roomDao.deleteByRid(member.getRid());
+                        deleteWhiteboardByUser(member.getRid(), member.getUid());
+                        log.info("dismiss the room: {}", member.getRid());
+                    } else {
+                        log.error("{} exit {} room error: {}", member.getUid(), member.getRid(), apiResultInfo.getErrorMessage());
+                    }
+                } else {
+                    IMApiResultInfo apiResultInfo = null;
+                    apiResultInfo = imHelper.quit(new String[]{member.getUid()}, member.getRid());
+                    if (apiResultInfo.isSuccess()) {
+                        roomMemberDao.deleteUserByRidAndUid(member.getRid(), member.getUid());
+                        MemberChangedMessage msg = new MemberChangedMessage(MemberChangedMessage.Action_Leave, member.getUid(), userRole);
+                        msg.setUserName(member.getName());
+                        imHelper.publishMessage(member.getUid(), member.getRid(), msg);
+                        imHelper.quit(new String[]{member.getUid()}, member.getRid());
+                        log.info("quit group: roomId={}, {}", member.getRid(), member.getUid());
+                    } else {
+                        log.error("{} exit {} room error: {}", member.getUid(), member.getRid(), apiResultInfo.getErrorMessage());
+                    }
+                }
+                userDao.deleteByUid(member.getUid());
+            } catch (Exception e) {
+                log.error("userIMOfflineKick error: userId={}", userId);
+            }
+        }
     }
 
     private void updateDisplay(String roomId, String senderId, String display, Integer isIncludeSender) throws ApiException, Exception {

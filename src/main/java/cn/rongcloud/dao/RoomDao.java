@@ -26,4 +26,9 @@ public interface RoomDao extends JpaRepository<Room, Long> {
     @Modifying
     @Query(value = "update t_room set display=?2 where rid=?1", nativeQuery = true)
     public int updateDisplayByRid(String rid, String display);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update t_room set whiteboard_name_index=?2 where rid=?1", nativeQuery = true)
+    public int updateWhiteboardNameIndexByRid(String rid, int whiteboardNameIndex);
 }

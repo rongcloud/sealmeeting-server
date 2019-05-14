@@ -24,6 +24,7 @@ public class Room implements Serializable {
     private @Getter @Setter String portrait;
     private @Getter @Setter Date createDt;
     private @Getter @Setter String display;
+    private @Getter @Setter int whiteboardNameIndex;
 
     @Override
     public String toString() {
@@ -33,6 +34,7 @@ public class Room implements Serializable {
                 ", portrait='" + portrait + '\'' +
                 ", createDt=" + createDt +
                 ", display='" + display + '\'' +
+                ", whiteboardNameIndex='" + whiteboardNameIndex + '\'' +
                 '}';
     }
 }
